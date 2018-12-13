@@ -1,0 +1,4 @@
+- name: ensure file exists
+  copy:
+    content: "hello world there"
+    dest: /tmp/foobar

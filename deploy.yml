@@ -1,0 +1,52 @@
+- name: Prepare container
+  hosts: cruiser
+  tasks:
+    - name: Copy Dockerfile and assets
+      copy:
+        src: ./docker
+        dest: /tmp
+    - name: Pull ubuntu image
+      docker_image:
+        name: ubuntu:18.04
+    - name: Create base image
+      docker_image:
+        path: /tmp/docker
+        name: base_image
+        # force: yes
+    - name: Create and expose container
+      docker_container:
+        name: '{{ app_name }}'
+        hostname: '{{ app_name }}'
+        image: base_image
+        state: started
+        tty: true
+        detach: true
+        ports:
+          - '8888:22'
+- name: Provision container
+  hosts: container
+  tasks:
+    - include: '{{ app_playbook }}'
+- name: Clean up and nginx
+  hosts: cruiser
+  tasks:
+    - name: Unexpose container SSH and expose HTTP
+      docker_container:
+        name: '{{ app_name }}'
+        hostname: '{{ app_name }}'
+        image: base_image
+        state: started
+        tty: true
+        detach: true
+        ports:
+          - '{{ app_port }}:8000'
+    - include: tasks/ssl.yml
+    - name: Copy nginx config
+      template: src=templates/nginx.conf dest=/etc/nginx/sites-available/{{ app_name }}.conf
+      notify: restart nginx
+    - name: enable nginx config (symlink)
+      file: src=/etc/nginx/sites-available/{{ app_name }}.conf dest=/etc/nginx/sites-enabled/{{ app_name }}.conf state=link
+      notify: restart nginx
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted

@@ -1,0 +1,7 @@
+- name: Destroy container
+  hosts: cruiser
+  tasks:
+    - name: Destroy container
+      docker_container:
+        name: '{{ app_name }}'
+        state: absent
