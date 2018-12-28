@@ -1,4 +1,4 @@
-# Cruiser
+# wharf
 
 A system for managing and provisioning Docker containers on a remote host using Ansible.
 
@@ -50,7 +50,7 @@ To destroy an application:
 
 ## How it works
 
-Note on hosts: the parent host (the server) is `cruiser`, and the target Docker container is `container`.
+Note on hosts: the parent host (the server) is `wharf`, and the target Docker container is `container`.
 
 1. Creates a base Docker image with Ansible and SSH installed, and runs a script at `/usr/share/start.sh` (if you want to, for example, start a Flask application, you should create your own `start.sh` and use Ansible to overwrite the default one)
 2. Creates a container with the specified `<APP NAME>`, then exposes its SSH port to port 8888 on the host machine

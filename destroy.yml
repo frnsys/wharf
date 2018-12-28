@@ -1,5 +1,5 @@
 - name: Destroy container
-  hosts: cruiser
+  hosts: wharf
   tasks:
     - name: Destroy container
       docker_container:

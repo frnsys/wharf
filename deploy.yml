@@ -1,5 +1,5 @@
 - name: Prepare container
-  hosts: cruiser
+  hosts: wharf
   tasks:
     - name: Copy Dockerfile and assets
       copy:
@@ -28,7 +28,7 @@
   tasks:
     - include: '{{ app_playbook }}'
 - name: Clean up and nginx
-  hosts: cruiser
+  hosts: wharf
   tasks:
     - name: Unexpose container SSH and expose HTTP
       docker_container:
