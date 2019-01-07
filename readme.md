@@ -29,21 +29,34 @@ sudo apt install -y nginx
 
 ---
 
+# Control machine setup
+
+1. Setup `hosts.ini` to match your host information.
+2. Create `authorized_keys` in `docker` with your public SSH key.
+
+---
+
 ## Usage
 
 To deploy an application:
 
 ```
-./deploy.sh <APP NAME> <APP PORT> <APP PLAYBOOK> <DOMAIN NAME> <LETSENCRYPT EMAIL>
+./wharf deploy <APP NAME> <APP PORT> <APP PLAYBOOK> <DOMAIN NAME> <LETSENCRYPT EMAIL>
 
 # Example
-./deploy.sh example-project 8001 example/playbook.yml foo.site.com foo@foo.com
+./wharf deploy example-project 8001 example/playbook.yml foo.site.com foo@foo.com
 ```
 
 To destroy an application:
 
 ```
-./destroy.sh <APP NAME>
+./wharf destroy <APP NAME>
+```
+
+To see what containers are deployed:
+
+```
+./wharf ls
 ```
 
 ---
@@ -55,5 +68,5 @@ Note on hosts: the parent host (the server) is `wharf`, and the target Docker co
 1. Creates a base Docker image with Ansible and SSH installed, and runs a script at `/usr/share/start.sh` (if you want to, for example, start a Flask application, you should create your own `start.sh` and use Ansible to overwrite the default one)
 2. Creates a container with the specified `<APP NAME>`, then exposes its SSH port to port 8888 on the host machine
 3. Uses the specified `<APP PLAYBOOK>` to deploy to the host machine's port 8888 (i.e. to the Docker container)
-4. Unbinds the container's SSH port from the host's port 8888 and binds port 8000 (assumed port your service is running on) to the specified app port
-5. Setup nginx (w/ HTTPS/SSL) for the specified domain name, passing traffic to the specified app port
+4. Unbinds the container's SSH port from the host's port 8888 and binds port 8000 (assumed port your service is running on) to the specified `<APP PORT>`
+5. Setup nginx (w/ HTTPS/SSL) for the specified domain name, passing traffic to the specified `<APP PORT>`
