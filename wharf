@@ -1,7 +1,11 @@
 #!/bin/bash
 
 CMD=$1
-WHARF_HOST=$2
+
+if [ -z $WHARF_HOST ]; then
+    echo "Please define the WHARF_HOST env var."
+    exit 1
+fi
 
 # Figure out where the actual script lives,
 # so we can find the playbooks
@@ -18,16 +22,10 @@ INVENTORY=/tmp/wharf_hosts.ini
 sed 's/HOST/'"$WHARF_HOST"'/' $DIR/hosts.ini > $INVENTORY
 
 # shift the args so that $2 is now $1
-# do it twice
-shift
 shift
 
 if [ -z $CMD ]; then
     echo "Please specify a command: ls, deploy, destroy"
-    exit 1
-
-elif [ -z $WHARF_HOST ]; then
-    echo "Please specify a wharf host"
     exit 1
 
 elif [ $CMD == 'deploy' ]; then

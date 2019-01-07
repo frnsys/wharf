@@ -32,6 +32,7 @@ sudo apt install -y nginx
 ## Control machine setup
 
 1. Create `authorized_keys` in `docker` with your public SSH key.
+2. In your `/etc/environment` file (or wherever else you define environment variables), define an env var called `WHARF_HOST` which should be set to the host server IP or hostname.
 
 ---
 
@@ -40,7 +41,7 @@ sudo apt install -y nginx
 To deploy an application:
 
 ```
-./wharf deploy <WHARF HOST> <APP NAME> <APP PORT> <APP PLAYBOOK> <DOMAIN NAME> <LETSENCRYPT EMAIL>
+./wharf deploy <APP NAME> <APP PORT> <APP PLAYBOOK> <DOMAIN NAME> <LETSENCRYPT EMAIL>
 
 # Example
 ./wharf deploy example-project 8001 example/playbook.yml foo.site.com foo@foo.com
@@ -49,20 +50,20 @@ To deploy an application:
 To destroy an application:
 
 ```
-./wharf destroy <WHARF HOST> <APP NAME>
+./wharf destroy <APP NAME>
 ```
 
 To see what containers are deployed:
 
 ```
-./wharf ls <WHARF HOST>
+./wharf ls
 ```
 
 ---
 
 ## How it works
 
-Note on hosts: the parent host (the server) is `wharf`, and the target Docker container is `container`. `<WHARF HOST>` should be set to the parent host IP or hostname.
+Note on hosts: the parent host (the server, `WHARF_HOST`) is `wharf`, and the target Docker container is `container`.
 
 1. Creates a base Docker image with Ansible and SSH installed, and runs a script at `/usr/share/start.sh` (if you want to, for example, start a Flask application, you should create your own `start.sh` and overwrite the default one in your `<APP PLAYBOOK>`)
 2. Creates a container with the specified `<APP NAME>`, then exposes its SSH port to port 8888 on the host machine
