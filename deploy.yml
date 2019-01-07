@@ -42,6 +42,8 @@
         detach: true
         ports:
           - '{{ app_port }}:8000'
+        volumes:
+          - '/var/log/{{ app_name }}:/var/log'
     - include: tasks/ssl.yml
     - name: Copy nginx config
       template: src=templates/nginx.conf dest=/etc/nginx/sites-available/{{ app_name }}.conf

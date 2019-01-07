@@ -69,7 +69,8 @@ Note on hosts: the parent host (the server) is `wharf`, and the target Docker co
 2. Creates a container with the specified `<APP NAME>`, then exposes its SSH port to port 8888 on the host machine
 3. Uses the specified `<APP PLAYBOOK>` to deploy to the host machine's port 8888 (i.e. to the Docker container)
 4. Unbinds the container's SSH port from the host's port 8888 and binds port 8000 (assumed port your service is running on) to the specified `<APP PORT>`
-5. Setup nginx (w/ HTTPS/SSL) for the specified `<DOMAIN NAME>`, passing traffic to the specified `<APP PORT>`
+5. Mounts `/var/log/<APP NAME>` as the container's `/var/log` so logs are persisted on the host system
+6. Setup nginx (w/ HTTPS/SSL) for the specified `<DOMAIN NAME>`, passing traffic to the specified `<APP PORT>`
 
 ---
 
