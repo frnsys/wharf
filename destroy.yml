@@ -5,3 +5,15 @@
       docker_container:
         name: '{{ app_name }}'
         state: absent
+    - name: Destroy image
+      docker_image:
+        name: '{{ app_name }}__image'
+        state: absent
+    - name: Remove nginx configs
+      file:
+        path: '{{ item }}'
+        state: absent
+      with_items:
+        - /etc/nginx/sites-available/{{ app_name }}.conf
+        - /etc/nginx/sites-enabled/{{ app_name }}.conf
+        - /etc/nginx/sites-enabled/{{ app_name }}_http.conf
