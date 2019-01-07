@@ -30,23 +30,28 @@ if [ -z $CMD ]; then
 
 elif [ $CMD == 'deploy' ]; then
     APP_NAME=$1
-    APP_PORT=$2
-    APP_PLAYBOOK=$3
-    DOMAIN_NAME=$4
+    APP_PLAYBOOK=$2
+    APP_TARGET_HOST=$3
     if [ -z $APP_NAME ]; then
         echo "Specify an app name"
-        exit 1
-    fi
-    if [ -z $APP_PORT ]; then
-        echo "Specify an app port"
         exit 1
     fi
     if [ -z $APP_PLAYBOOK ]; then
         echo "Specify an app playbook path"
         exit 1
     fi
+    if [ -z $APP_TARGET_HOST ]; then
+        echo "Specify a target host and port"
+        exit 1
+    fi
+
+    IFS=: read DOMAIN_NAME APP_PORT <<< $APP_TARGET_HOST
     if [ -z $DOMAIN_NAME ]; then
-        echo "Specify a domain name"
+        echo "Specify an app port"
+        exit 1
+    fi
+    if [ -z $APP_PORT ]; then
+        echo "Specify an app port"
         exit 1
     fi
 

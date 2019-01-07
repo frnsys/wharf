@@ -41,11 +41,13 @@ sudo apt install -y nginx
 To deploy an application:
 
 ```
-./wharf deploy <APP NAME> <APP PORT> <APP PLAYBOOK> <DOMAIN NAME>
+./wharf deploy <APP NAME> <APP PLAYBOOK> <DOMAIN NAME>:<APP PORT>
 
 # Example
-./wharf deploy example-project 8001 example/playbook.yml foo.site.com
+./wharf deploy example-project example/playbook.yml foo.site.com:8001
 ```
+
+Note that `<APP PORT>`s must be unique for a server.
 
 To destroy an application:
 
