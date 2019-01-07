@@ -41,10 +41,10 @@ sudo apt install -y nginx
 To deploy an application:
 
 ```
-./wharf deploy <APP NAME> <APP PORT> <APP PLAYBOOK> <DOMAIN NAME> <LETSENCRYPT EMAIL>
+./wharf deploy <APP NAME> <APP PORT> <APP PLAYBOOK> <DOMAIN NAME>
 
 # Example
-./wharf deploy example-project 8001 example/playbook.yml foo.site.com foo@foo.com
+./wharf deploy example-project 8001 example/playbook.yml foo.site.com
 ```
 
 To destroy an application:
