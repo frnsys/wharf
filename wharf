@@ -1,7 +1,19 @@
 #!/bin/bash
 
 CMD=$1
-shift # shift the args so that $2 is now $1
+
+# Figure out where the actual script lives,
+# so we can find the playbooks
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+
+# shift the args so that $2 is now $1
+shift
 
 if [ -z $CMD ]; then
     echo "Please specify a command: ls, deploy, destroy"
@@ -34,7 +46,7 @@ elif [ $CMD == 'deploy' ]; then
         exit 1
     fi
 
-    ansible-playbook -i hosts.ini deploy.yml \
+    ansible-playbook -i $DIR/hosts.ini $DIR/deploy.yml \
         -e "app_name=${APP_NAME}" \
         -e "app_port=${APP_PORT}" \
         -e "app_playbook=${APP_PLAYBOOK}" \
@@ -48,10 +60,10 @@ elif [ $CMD == 'destroy' ]; then
         exit 1
     fi
 
-    ansible-playbook -i hosts.ini destroy.yml -e "app_name=${APP_NAME}"
+    ansible-playbook -i $DIR/hosts.ini $DIR/destroy.yml -e "app_name=${APP_NAME}"
 
 elif [ $CMD == 'ls' ]; then
-    ansible wharf -i hosts.ini -a "/usr/bin/docker ps -a"
+    ansible wharf -i $DIR/hosts.ini -a "/usr/bin/docker ps -a"
 
 else
     echo "Please specify a command: ls, deploy, destroy"
