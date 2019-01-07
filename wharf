@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CMD=$1
+CWD=$(pwd)
 
 if [ -z $WHARF_HOST ]; then
     echo "Please define the WHARF_HOST env var."
@@ -53,6 +54,11 @@ elif [ $CMD == 'deploy' ]; then
     if [ -z $APP_PORT ]; then
         echo "Specify an app port"
         exit 1
+    fi
+
+    # Check if playbook path is relative
+    if [[ ! "$APP_PLAYBOOK" = /* ]]; then
+        APP_PLAYBOOK=$CWD/$APP_PLAYBOOK
     fi
 
     ansible-playbook -i $INVENTORY $DIR/deploy.yml \
