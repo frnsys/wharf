@@ -33,6 +33,11 @@ sudo apt install -y nginx
 
 1. Create `authorized_keys` in `docker` with your public SSH key.
 2. In your `/etc/environment` file (or wherever else you define environment variables), define an env var called `WHARF_HOST` which should be set to the host server IP or hostname.
+3. Add your public SSH key to the `WHARF_HOST` server.
+4. Copy this repo to `/opt/wharf/`.
+3. Symlink the `wharf` script to a more convenient location, e.g. `/usr/local/bin/`:
+
+    sudo ln -s /opt/wharf/wharf /usr/local/bin/wharf
 
 ---
 
@@ -41,10 +46,10 @@ sudo apt install -y nginx
 To deploy an application:
 
 ```
-./wharf deploy <APP NAME> <APP PLAYBOOK> <DOMAIN NAME>:<APP PORT>
+wharf deploy <APP NAME> <APP PLAYBOOK> <DOMAIN NAME>:<APP PORT>
 
 # Example
-./wharf deploy example-project example/playbook.yml foo.site.com:8001
+wharf deploy example-project example/playbook.yml foo.site.com:8001
 ```
 
 Note that `<APP PORT>`s must be unique for a server.
@@ -52,13 +57,13 @@ Note that `<APP PORT>`s must be unique for a server.
 To destroy an application:
 
 ```
-./wharf destroy <APP NAME>
+wharf destroy <APP NAME>
 ```
 
 To see what containers are deployed:
 
 ```
-./wharf ls
+wharf ls
 ```
 
 ---
@@ -79,7 +84,6 @@ Note on hosts: the parent host (the server, `WHARF_HOST`) is `wharf`, and the ta
 ## Tips
 
 - Make sure your web service uses the host `0.0.0.0` and port `8000`.
-- You can symlink the `wharf` script to e.g. `/usr/local/bin/wharf` so you can run it from wherever
 - To start a bash shell in a running container: `docker exec -it <CONTAINER NAME> bash` (on the `wharf` server)
 - To view the logs of a container: `docker logs -t <CONTAINER NAME>` (on the `wharf` server)
 
