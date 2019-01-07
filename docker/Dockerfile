@@ -6,7 +6,11 @@ RUN apt upgrade -y
 # Ansible
 RUN apt install -y python python-pip
 
+# rsync for Ansible's synchronize module
 RUN apt install -y rsync
+
+# vim for convenience
+RUN apt install -y vim
 
 # Setup SSH
 RUN apt install -y openssh-server
