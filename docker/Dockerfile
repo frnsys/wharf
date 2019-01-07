@@ -6,6 +6,8 @@ RUN apt upgrade -y
 # Ansible
 RUN apt install -y python python-pip
 
+RUN apt install -y rsync
+
 # Setup SSH
 RUN apt install -y openssh-server
 RUN mkdir /root/.ssh
