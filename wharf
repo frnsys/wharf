@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CMD=$1
+WHARF_HOST=$2
 
 # Figure out where the actual script lives,
 # so we can find the playbooks
@@ -12,11 +13,21 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 
+# Create the hosts inventory file
+INVENTORY=/tmp/wharf_hosts.ini
+sed 's/HOST/'"$WHARF_HOST"'/' $DIR/hosts.ini > $INVENTORY
+
 # shift the args so that $2 is now $1
+# do it twice
+shift
 shift
 
 if [ -z $CMD ]; then
     echo "Please specify a command: ls, deploy, destroy"
+    exit 1
+
+elif [ -z $WHARF_HOST ]; then
+    echo "Please specify a wharf host"
     exit 1
 
 elif [ $CMD == 'deploy' ]; then
@@ -46,7 +57,7 @@ elif [ $CMD == 'deploy' ]; then
         exit 1
     fi
 
-    ansible-playbook -i $DIR/hosts.ini $DIR/deploy.yml \
+    ansible-playbook -i $INVENTORY $DIR/deploy.yml \
         -e "app_name=${APP_NAME}" \
         -e "app_port=${APP_PORT}" \
         -e "app_playbook=${APP_PLAYBOOK}" \
@@ -60,10 +71,10 @@ elif [ $CMD == 'destroy' ]; then
         exit 1
     fi
 
-    ansible-playbook -i $DIR/hosts.ini $DIR/destroy.yml -e "app_name=${APP_NAME}"
+    ansible-playbook -i $INVENTORY $DIR/destroy.yml -e "app_name=${APP_NAME}"
 
 elif [ $CMD == 'ls' ]; then
-    ansible wharf -i $DIR/hosts.ini -a "/usr/bin/docker ps -a"
+    ansible wharf -i $INVENTORY -a "/usr/bin/docker ps -a"
 
 else
     echo "Please specify a command: ls, deploy, destroy"
