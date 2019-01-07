@@ -13,7 +13,7 @@ sudo apt update
 sudo apt upgrade -y
 
 # Ansible requirements
-sudo apt install -y python python-pip
+sudo apt install -y python python-pip python-setuptools
 sudo pip install docker-py # 2.7; for 3 use "docker"
 
 # Install Docker
@@ -70,3 +70,10 @@ Note on hosts: the parent host (the server) is `wharf`, and the target Docker co
 3. Uses the specified `<APP PLAYBOOK>` to deploy to the host machine's port 8888 (i.e. to the Docker container)
 4. Unbinds the container's SSH port from the host's port 8888 and binds port 8000 (assumed port your service is running on) to the specified `<APP PORT>`
 5. Setup nginx (w/ HTTPS/SSL) for the specified `<DOMAIN NAME>`, passing traffic to the specified `<APP PORT>`
+
+---
+
+## Tips
+
+- Make sure your web server uses the host `0.0.0.0` and port `8000`.
+- You can symlink the `wharf` script to e.g. `/usr/local/bin/wharf` so you can run it from wherever
