@@ -76,5 +76,15 @@ Note on hosts: the parent host (the server) is `wharf`, and the target Docker co
 
 ## Tips
 
-- Make sure your web server uses the host `0.0.0.0` and port `8000`.
+- Make sure your web service uses the host `0.0.0.0` and port `8000`.
 - You can symlink the `wharf` script to e.g. `/usr/local/bin/wharf` so you can run it from wherever
+- To start a bash shell in a running container: `docker exec -it <CONTAINER NAME> bash` (on the `wharf` server)
+- To view the logs of a container: `docker logs -t <CONTAINER NAME>` (on the `wharf` server)
+
+---
+
+## Example
+
+A simple Flask playbook is included at `example/playbook.yml`.
+
+TODO: update the example to use uwsgi/supervisor

@@ -1,4 +1,17 @@
-- name: ensure file exists
+- name: install dependencies (system)
+  apt:
+    pkg:
+      - python3
+      - python3-pip
+    state: present
+- name: Copy app files
+  synchronize:
+    src: /path/to/local/app/files
+    dest: /srv/app/
+    delete: yes
+- name: Install dependencies (app)
+  pip: requirements=/srv/app/requirements.txt executable=pip3
+- name: overwrite start.sh
   copy:
-    content: "hello world there"
-    dest: /tmp/foobar
+    content: "#!/bin/bash\ncd /srv/app\npython3 app.py"
+    dest: /usr/share/start.sh
