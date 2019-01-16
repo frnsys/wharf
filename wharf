@@ -3,10 +3,8 @@
 CMD=$1
 CWD=$(pwd)
 
-if [ -z $WHARF_HOST ]; then
-    echo "Please define the WHARF_HOST env var."
-    exit 1
-fi
+: "${WHARF_HOST:?not set or empty}"
+: "${WHARF_USER:?not set or empty}"
 
 # Figure out where the actual script lives,
 # so we can find the playbooks
@@ -20,7 +18,7 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 
 # Create the hosts inventory file
 INVENTORY=/tmp/wharf_hosts.ini
-sed 's/HOST/'"$WHARF_HOST"'/' $DIR/hosts.ini > $INVENTORY
+sed 's/HOST/'"$WHARF_HOST"'/' $DIR/hosts.ini | sed 's/USER/'"$WHARF_USER"'/' > $INVENTORY
 
 # shift the args so that $2 is now $1
 shift

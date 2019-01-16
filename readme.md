@@ -32,7 +32,7 @@ sudo apt install -y nginx
 ## Control machine setup
 
 1. Create `authorized_keys` in `docker` with your public SSH key.
-2. In your `/etc/environment` file (or wherever else you define environment variables), define an env var called `WHARF_HOST` which should be set to the host server IP or hostname.
+2. In your `/etc/environment` file (or wherever else you define environment variables), define an env var called `WHARF_HOST` which should be set to the host server IP or hostname, and one called `WHARF_USER` which is the user to login to `WHARF_HOST` as.
 3. Add your public SSH key to the `WHARF_HOST` server.
 4. Copy this repo to `/opt/wharf/`.
 3. Symlink the `wharf` script to a more convenient location, e.g. `/usr/local/bin/`:
