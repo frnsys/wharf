@@ -72,6 +72,12 @@ To follow container logs:
 wharf log <APP NAME>
 ```
 
+To start a `bash` shell in an app container:
+
+```
+wharf bash <APP NAME>
+```
+
 ---
 
 ## How it works
@@ -90,7 +96,6 @@ Note on hosts: the parent host (the server, `WHARF_HOST`) is `wharf`, and the ta
 ## Tips
 
 - Make sure your web service uses the host `0.0.0.0` and port `8000`.
-- To start a bash shell in a running container: `docker exec -it <CONTAINER NAME> bash` (on the `wharf` server)
 
 ---
 
