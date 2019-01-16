@@ -66,6 +66,12 @@ To see what containers are deployed:
 wharf ls
 ```
 
+To follow container logs:
+
+```
+wharf log <APP NAME>
+```
+
 ---
 
 ## How it works
@@ -85,7 +91,6 @@ Note on hosts: the parent host (the server, `WHARF_HOST`) is `wharf`, and the ta
 
 - Make sure your web service uses the host `0.0.0.0` and port `8000`.
 - To start a bash shell in a running container: `docker exec -it <CONTAINER NAME> bash` (on the `wharf` server)
-- To view the logs of a container: `docker logs -t <CONTAINER NAME>` (on the `wharf` server)
 
 ---
 
