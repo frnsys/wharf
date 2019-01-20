@@ -37,7 +37,9 @@ sudo apt install -y nginx
 4. Copy this repo to `/opt/wharf/`.
 3. Symlink the `wharf` script to a more convenient location, e.g. `/usr/local/bin/`:
 
-    sudo ln -s /opt/wharf/wharf /usr/local/bin/wharf
+```
+sudo ln -s /opt/wharf/wharf /usr/local/bin/wharf
+```
 
 ---
 
