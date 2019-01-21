@@ -40,6 +40,7 @@
         state: started
         tty: true
         detach: true
+        restart_policy: always
         ports:
           - '{{ app_port }}:8000'
         volumes:
