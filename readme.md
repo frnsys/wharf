@@ -80,6 +80,12 @@ To start a `bash` shell in an app container:
 wharf bash <APP NAME>
 ```
 
+To clean dangling docker images:
+
+```
+wharf clean
+```
+
 ---
 
 ## How it works

@@ -92,6 +92,9 @@ elif [ $CMD == 'bash' ]; then
 
     ssh -tt $WHARF_USER@$WHARF_HOST 'docker exec -it '$APP_NAME' bash'
 
+elif [ $CMD == 'clean' ]; then
+    ssh $WHARF_USER@$WHARF_HOST 'docker image prune'
+
 elif [ $CMD == 'ls' ]; then
     ansible wharf -i $INVENTORY -a "/usr/bin/docker ps -a"
 
