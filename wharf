@@ -92,6 +92,15 @@ elif [ $CMD == 'bash' ]; then
 
     ssh -tt $WHARF_USER@$WHARF_HOST 'docker exec -it '$APP_NAME' bash'
 
+elif [ $CMD == 'restart' ]; then
+    APP_NAME=$1
+    if [ -z $APP_NAME ]; then
+        echo "Specify an app name"
+        exit 1
+    fi
+
+    ssh $WHARF_USER@$WHARF_HOST 'docker restart '$APP_NAME
+
 elif [ $CMD == 'clean' ]; then
     ssh $WHARF_USER@$WHARF_HOST 'docker image prune'
 
