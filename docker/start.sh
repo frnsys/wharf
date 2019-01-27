@@ -2,4 +2,6 @@
 
 echo "Started"
 touch /tmp/hello_world
-python3 -m http.server
+while true; do
+    sleep 1
+done
