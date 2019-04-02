@@ -24,7 +24,7 @@ sed 's/HOST/'"$WHARF_HOST"'/' $DIR/hosts.ini | sed 's/USER/'"$WHARF_USER"'/' > $
 shift
 
 if [ -z $CMD ]; then
-    echo "Please specify a command: ls, deploy, destroy"
+    echo "Please specify a command: ls, deploy, destroy, log, bash, restart, clean, stats"
     exit 1
 
 elif [ $CMD == 'deploy' ]; then
@@ -73,6 +73,10 @@ elif [ $CMD == 'destroy' ]; then
     fi
 
     ansible-playbook -i $INVENTORY $DIR/destroy.yml -e "app_name=${APP_NAME}"
+
+elif [ $CMD == 'stats' ]; then
+
+    ssh $WHARF_USER@$WHARF_HOST 'docker stats'
 
 elif [ $CMD == 'log' ]; then
     APP_NAME=$1
