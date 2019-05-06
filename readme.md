@@ -6,8 +6,7 @@ I developed this to quickly deploy multiple client projects to a server without 
 
 ---
 
-## Initial server setup
-
+## Initial server setup for `WHARF_HOST`
 
 `wharf` has only been tested on Ubuntu 18.04, but it should work on any system that supports Ansible and Docker. These instructions are for Ubuntu specifically.
 
@@ -34,11 +33,12 @@ sudo apt install -y nginx
 
 ## Control machine setup
 
-1. Create `authorized_keys` in `docker` with your public SSH key.
-2. In your `/etc/environment` file (or wherever else you define environment variables), define an env var called `WHARF_HOST` which should be set to the host server IP or hostname, and one called `WHARF_USER` which is the user to login to `WHARF_HOST` as.
-3. Add your public SSH key to the `WHARF_HOST` server.
-4. Copy this repo to `/opt/wharf/`.
-3. Symlink the `wharf` script to a more convenient location, e.g. `/usr/local/bin/`:
+1. Install Ansible: `pip install ansible`
+2. Create `authorized_keys` in the `docker` folder (in this repo) with your public SSH key. This public key will be set as an authorized key for the Docker container, which gives Ansible access to provision it.
+3. In your `/etc/environment` file (or wherever else you define environment variables), define an env var called `WHARF_HOST` which should be set to the host server IP or hostname, and one called `WHARF_USER` which is the user to login to `WHARF_HOST` as.
+4. Add your public SSH key to the `WHARF_HOST` server.
+5. Copy this repo to `/opt/wharf/`.
+6. Symlink the `wharf` script to a more convenient location, e.g. `/usr/local/bin/`:
 
 ```
 sudo ln -s /opt/wharf/wharf /usr/local/bin/wharf
@@ -95,7 +95,7 @@ wharf clean
 
 Note on hosts: the parent host (the server, `WHARF_HOST`) is `wharf`, and the target Docker container is `container`.
 
-1. Creates a base Docker image with Ansible and SSH installed, and runs a script at `/usr/share/start.sh` (if you want to, for example, start a Flask application, you should create your own `start.sh` and overwrite the default one in your `<APP PLAYBOOK>`)
+1. Creates a base Docker image on `WHARF_HOST` with Ansible and SSH installed, and runs a script at `/usr/share/start.sh` (if you want to, for example, start a Flask application, you should create your own `start.sh` and overwrite the default one in your `<APP PLAYBOOK>`)
 2. Creates `container` with the specified `<APP NAME>`, then exposes its SSH port to port 8888 on `WHARF_HOST` (so that Ansible can access it)
 3. Uses the specified `<APP PLAYBOOK>` to deploy to the `WHARF_HOST`'s port 8888 (i.e. to `container`)
 4. Unbinds the container's SSH port from `WHARF_HOST`'s port 8888 and binds its port 8000 (assumed port your service is running on) to the specified `<APP PORT>` of `container`
