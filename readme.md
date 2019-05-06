@@ -8,6 +8,9 @@ I developed this to quickly deploy multiple client projects to a server without 
 
 ## Initial server setup
 
+
+`wharf` has only been tested on Ubuntu 18.04, but it should work on any system that supports Ansible and Docker. These instructions are for Ubuntu specifically.
+
 ```
 sudo apt update
 sudo apt upgrade -y
@@ -93,10 +96,10 @@ wharf clean
 Note on hosts: the parent host (the server, `WHARF_HOST`) is `wharf`, and the target Docker container is `container`.
 
 1. Creates a base Docker image with Ansible and SSH installed, and runs a script at `/usr/share/start.sh` (if you want to, for example, start a Flask application, you should create your own `start.sh` and overwrite the default one in your `<APP PLAYBOOK>`)
-2. Creates a container with the specified `<APP NAME>`, then exposes its SSH port to port 8888 on the host machine
-3. Uses the specified `<APP PLAYBOOK>` to deploy to the host machine's port 8888 (i.e. to the Docker container)
-4. Unbinds the container's SSH port from the host's port 8888 and binds port 8000 (assumed port your service is running on) to the specified `<APP PORT>`
-5. Mounts `/var/log/<APP NAME>` as the container's `/var/log` so logs are persisted on the host system
+2. Creates `container` with the specified `<APP NAME>`, then exposes its SSH port to port 8888 on `WHARF_HOST` (so that Ansible can access it)
+3. Uses the specified `<APP PLAYBOOK>` to deploy to the `WHARF_HOST`'s port 8888 (i.e. to `container`)
+4. Unbinds the container's SSH port from `WHARF_HOST`'s port 8888 and binds its port 8000 (assumed port your service is running on) to the specified `<APP PORT>` of `container`
+5. Mounts `/var/log/<APP NAME>` as `container`'s `/var/log` so logs are persisted on the host system
 6. Setup nginx (w/ HTTPS/SSL) for the specified `<DOMAIN NAME>`, passing traffic to the specified `<APP PORT>`
 
 ---
