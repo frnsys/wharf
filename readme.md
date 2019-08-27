@@ -107,6 +107,7 @@ Note on hosts: the parent host (the server, `WHARF_HOST`) is `wharf`, and the ta
 ## Tips
 
 - Make sure your web service uses the host `0.0.0.0` and port `8000`.
+- If you need files to persist between Docker image builds, you can use `/var/local/` in the container. This is mounted to `/var/local/<APP NAME>` on the host system.
 
 ---
 

@@ -45,6 +45,7 @@
           - '{{ app_port }}:8000'
         volumes:
           - '/var/log/{{ app_name }}:/var/log'
+          - '/var/local/{{ app_name }}:/var/local'
     - include: tasks/ssl.yml
     - name: Copy nginx config
       template: src=templates/nginx.conf dest=/etc/nginx/sites-available/{{ app_name }}.conf
